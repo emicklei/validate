@@ -1,6 +1,9 @@
 package validate
 
-import "testing"
+import (
+	"fmt"
+	"testing"
+)
 
 func TestPositiveInt(t *testing.T) {
 	i := -1
@@ -38,12 +41,26 @@ years must be between 2 and 10, got -1` {
 	}
 }
 
-//func TestPositiveString(t *testing.T) {
-//	result := String("title", "mr").IsPositive("%v is not positive")
-//	if !result.IsError() {
-//		t.Fail()
-//	}
-//	if result.Message() != "title is not a number, got mr (string)" {
-//		t.Errorf("expected %s got %v", "title is not a number", result.Message())
-//	}
-//}
+func IsOdd(name string, value interface{}) error {
+	i, ok := value.(int)
+	if !ok {
+		return fmt.Errorf("%s is not an int, got %v (%T)", name, value, value)
+	}
+	if i%2 != 0 {
+		return fmt.Errorf("%s is not even, got %v", name, value)
+	}
+	return nil
+}
+
+func TestCustomChecker(t *testing.T) {
+	i := 41
+	result := Int("years", i).
+		IsPositive("%v must be positive, got %v").
+		And(IsOdd)
+	if !result.IsError() {
+		t.Fail()
+	}
+	if result.Message() != "years is not even, got 41" {
+		t.Errorf(result.Message())
+	}
+}
