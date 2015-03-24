@@ -2,23 +2,23 @@ package validate
 
 import "bytes"
 
-type validator struct {
+type Validator struct {
 	errors []error
 	name   string
 	value  interface{}
 }
 
-func newValidator(name string, value interface{}) validator {
-	return validator{errors: []error{}, name: name, value: value}
+func newValidator(name string, value interface{}) Validator {
+	return Validator{errors: []error{}, name: name, value: value}
 }
 
-// IsError returns whether this validator collected at least one error.
-func (v *validator) IsError() bool {
+// IsError returns whether this Validator collected at least one error.
+func (v *Validator) IsError() bool {
 	return len(v.errors) > 0
 }
 
 // Message returns a newline separated string of all error messsages.
-func (v *validator) Message() string {
+func (v *Validator) Message() string {
 	var buf bytes.Buffer
 	for i, e := range v.errors {
 		if i > 0 {
@@ -33,8 +33,8 @@ func (v *validator) Message() string {
 type Validation func(name string, actual interface{}) error
 
 // And calls the validation function passing the name and the actual value.
-// As it returns an internal validator instance, this call must be last in the chain.
-func (v *validator) And(f Validation) *validator {
+// As it returns an internal Validator instance, this call must be last in the chain.
+func (v *Validator) And(f Validation) *Validator {
 	if err := f(v.name, v.value); err != nil {
 		v.errors = append(v.errors, err)
 	}

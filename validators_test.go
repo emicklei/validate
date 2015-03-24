@@ -42,7 +42,7 @@ func ExampleIsBetween() {
 	}
 }
 
-func TestWithInt(t *testing.T) {
+func TestChainInt(t *testing.T) {
 	i := -1
 	result := Int("years", i).
 		IsPositive("%v must be positive, got %v").
@@ -52,6 +52,14 @@ func TestWithInt(t *testing.T) {
 	}
 	if result.Message() != `years must be positive, got -1
 years must be between 2 and 10, got -1` {
+		t.Errorf(result.Message())
+	}
+}
+
+func TestStringHasLength(t *testing.T) {
+	s := "hello"
+	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be tween %v and %v, got %v")
+	if result.Message() != "greeting length must be tween 6 and 12, got 5" {
 		t.Errorf(result.Message())
 	}
 }
