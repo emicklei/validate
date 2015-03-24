@@ -17,7 +17,7 @@ func TestPositiveInt(t *testing.T) {
 	}
 }
 
-func ExampleIntVarIsPositive() {
+func ExampleIntVar_IsPositive() {
 	result := Int("length", -1).IsPositive("%v must be positive, got %v")
 	if result.IsError() {
 		log.Println(result.Message())
@@ -35,7 +35,7 @@ func TestBetweenInt(t *testing.T) {
 	}
 }
 
-func ExampleIntVarIsBetween() {
+func ExampleIntVar_IsBetween() {
 	result := Int("grade", 12).IsBetween(1, 10, "%v must be between %v and %v, got %v")
 	if result.IsError() {
 		log.Println(result.Message())
@@ -64,7 +64,7 @@ func TestStringHasLength(t *testing.T) {
 	}
 }
 
-func ExampleStringVarHasLengthBetween() {
+func ExampleStringVar_HasLengthBetween() {
 	s := "hello"
 	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be tween %v and %v, got %v")
 	if result.IsError() {
