@@ -1,10 +1,12 @@
 Validate
 ========
 
-Go package for writing validations
+Go package for writing validations.
 
-First you create a named, type variable struct. Then you call one or more validating functions.
+First you create a named, typed variable.
+Then you call one or more validating functions.
 You must provide the error message template ; it is not part of the package.
+Inspect the result and process its error message if needed.
 
 	if result := validate.Int("years", i).IsPositive("%v must be positive, got %v"); result.IsError() {
 		log.Println(result.Message())
@@ -13,6 +15,7 @@ You must provide the error message template ; it is not part of the package.
 	result := validate.Int("years", i).
 		IsPositive("%v must be positive, got %v").
 		IsBetween(2, 10, "%v must be between %v and %v, got %v")
+		
 	if result.IsError() {
 		log.Println(result.Message())
 	}

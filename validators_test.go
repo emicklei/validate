@@ -2,6 +2,7 @@ package validate
 
 import (
 	"fmt"
+	"log"
 	"testing"
 )
 
@@ -16,6 +17,13 @@ func TestPositiveInt(t *testing.T) {
 	}
 }
 
+func ExampleIsPositive() {
+	result := Int("length", -1).IsPositive("%v must be positive, got %v")
+	if result.IsError() {
+		log.Println(result.Message())
+	}
+}
+
 func TestBetweenInt(t *testing.T) {
 	i := 12
 	result := Int("years", i).IsBetween(2, 10, "%v must be between %v and %v, got %v")
@@ -24,6 +32,13 @@ func TestBetweenInt(t *testing.T) {
 	}
 	if result.Message() != "years must be between 2 and 10, got 12" {
 		t.Errorf(result.Message())
+	}
+}
+
+func ExampleIsBetween() {
+	result := Int("grade", 12).IsBetween(1, 10, "%v must be between %v and %v, got %v")
+	if result.IsError() {
+		log.Println(result.Message())
 	}
 }
 
