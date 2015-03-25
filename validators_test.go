@@ -58,15 +58,15 @@ years must be between 2 and 10, got -1` {
 
 func TestStringHasLength(t *testing.T) {
 	s := "hello"
-	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be tween %v and %v, got %v")
-	if result.Message() != "greeting length must be tween 6 and 12, got 5" {
+	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be between %v and %v, got %v")
+	if result.Message() != "greeting length must be between 6 and 12, got 5" {
 		t.Errorf(result.Message())
 	}
 }
 
 func ExampleStringVar_HasLengthBetween() {
 	s := "hello"
-	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be tween %v and %v, got %v")
+	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be between %v and %v, got %v")
 	if result.IsError() {
 		log.Println(result.Message())
 	}
@@ -93,5 +93,26 @@ func TestCustomChecker(t *testing.T) {
 	}
 	if result.Message() != "years is not even, got 41" {
 		t.Errorf(result.Message())
+	}
+}
+
+func TestCompareTwoVars(t *testing.T) {
+	begin := 10
+	end := 0
+	result := Condition(begin, end, begin < end, "begin = %v must be less than end = %v")
+	if !result.IsError() {
+		t.Fail()
+	}
+	if result.Message() != "begin = 10 must be less than end = 0" {
+		t.Errorf(result.Message())
+	}
+}
+
+func ExampleCondition() {
+	start := 5
+	end := 1
+	result := Condition(start, end, start < end, "start day = %v must be before end day = %v")
+	if result.IsError() {
+		log.Println(result.Message())
 	}
 }

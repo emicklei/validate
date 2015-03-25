@@ -49,3 +49,13 @@ func (s *StringVar) HasLengthBetween(min, max int, format string) *StringVar {
 	}
 	return s
 }
+
+// Condition return a Validator with an error if the condition is false.
+// Error format: left,right
+func Condition(left, right interface{}, condition bool, format string) *Validator {
+	validator := newValidator("", condition)
+	if !condition {
+		validator.errors = append(validator.errors, fmt.Errorf(format, left, right))
+	}
+	return &validator
+}
