@@ -17,6 +17,14 @@ func (v *Validator) IsError() bool {
 	return len(v.errors) > 0
 }
 
+// ifError calls the function if there is at least one validation error.
+func (v *Validator) ifError(callback func(string)) {
+	if len(v.errors) == 0 {
+		return
+	}
+	callback(v.Message())
+}
+
 // Message returns a newline separated string of all error messsages.
 func (v *Validator) Message() string {
 	var buf bytes.Buffer

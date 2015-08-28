@@ -38,6 +38,14 @@ and use it with together with existing functions
 	result := validate.Int("marbles", given)
 		.IsPositive("%v must be positive, got %v")
 		.And(IsOdd)
+		
+Combining validation and type conversion
+
+	version := validate.Atoi("version", request.FormValues("version")).
+		IsPositive("%s must be positive, got %d").
+		IfError(func(msg string) {
+			log.Error(msg)
+	}).Int()	
 
 - [Documentation on godoc.org](http://godoc.org/github.com/emicklei/validate)
 

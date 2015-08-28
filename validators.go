@@ -1,6 +1,9 @@
 package validate
 
-import "fmt"
+import (
+	"fmt"
+	"strconv"
+)
 
 type IntVar struct {
 	Validator
@@ -9,6 +12,27 @@ type IntVar struct {
 // Int returns a new named variable of type int.
 func Int(name string, v int) *IntVar {
 	return &IntVar{Validator: newValidator(name, v)}
+}
+
+// Atoi returns a new named variable of type int converted from a string value.
+func Atoi(name, v string) *IntVar {
+	i, err := strconv.Atoi(v)
+	vr := &IntVar{Validator: newValidator(name, i)}
+	if err != nil {
+		vr.errors = append(vr.errors, err)
+	}
+	return vr
+}
+
+// Int returns the value.
+func (i *IntVar) Int() int {
+	return i.value.(int)
+}
+
+// IfError calls the function if there is at least one validation error.
+func (v *IntVar) IfError(callback func(string)) *IntVar {
+	v.ifError(callback)
+	return v
 }
 
 // IsPositive validates a number for positive.
@@ -38,6 +62,17 @@ type StringVar struct {
 // String returns a new named variable of type string.
 func String(name string, s string) *StringVar {
 	return &StringVar{Validator: newValidator(name, s)}
+}
+
+// String returns the value
+func (v *StringVar) String() string {
+	return v.value.(string)
+}
+
+// IfError calls the function if there is at least one validation error.
+func (v *StringVar) IfError(callback func(string)) *StringVar {
+	v.ifError(callback)
+	return v
 }
 
 // HasLengthBetween validates the length of the string.
