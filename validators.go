@@ -1,8 +1,10 @@
 package validate
 
 import (
+	"errors"
 	"fmt"
 	"strconv"
+	"strings"
 )
 
 type IntVar struct {
@@ -93,4 +95,27 @@ func Condition(left, right interface{}, condition bool, format string) *Validato
 		validator.errors = append(validator.errors, fmt.Errorf(format, left, right))
 	}
 	return &validator
+}
+
+// IsOneOf validates whether the value of one of a list of string values.
+// Note that the last parameter must be the message template.
+func (s *StringVar) IsOneOf(valuesAndFormat ...string) *StringVar {
+	if len(valuesAndFormat) < 2 {
+		s.errors = append(s.errors, errors.New("bad arguments in IsOneOf"))
+		return s
+	}
+	actual := s.value.(string)
+	values := valuesAndFormat[:len(valuesAndFormat)-1]
+	format := valuesAndFormat[len(valuesAndFormat)-1]
+	ok := false
+	for _, each := range values {
+		if each == actual {
+			ok = true
+			break
+		}
+	}
+	if !ok {
+		s.errors = append(s.errors, fmt.Errorf(format, actual, strings.Join(values, ",")))
+	}
+	return s
 }
