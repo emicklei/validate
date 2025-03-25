@@ -31,7 +31,7 @@ func TestBetweenInt(t *testing.T) {
 		t.Error("must be error")
 	}
 	if result.Message() != "years must be between 2 and 10, got 12" {
-		t.Errorf(result.Message())
+		t.Error(result.Message())
 	}
 }
 
@@ -52,7 +52,7 @@ func TestChainInt(t *testing.T) {
 	}
 	if result.Message() != `years must be positive, got -1
 years must be between 2 and 10, got -1` {
-		t.Errorf(result.Message())
+		t.Error(result.Message())
 	}
 }
 
@@ -60,7 +60,7 @@ func TestStringHasLength(t *testing.T) {
 	s := "hello"
 	result := String("greeting", s).HasLengthBetween(6, 12, "%s length must be between %v and %v, got %v")
 	if result.Message() != "greeting length must be between 6 and 12, got 5" {
-		t.Errorf(result.Message())
+		t.Error(result.Message())
 	}
 }
 
@@ -92,7 +92,7 @@ func TestCustomChecker(t *testing.T) {
 		t.Fail()
 	}
 	if result.Message() != "years is not even, got 41" {
-		t.Errorf(result.Message())
+		t.Error(result.Message())
 	}
 }
 
@@ -104,7 +104,7 @@ func TestCompareTwoVars(t *testing.T) {
 		t.Fail()
 	}
 	if result.Message() != "begin = 10 must be less than end = 0" {
-		t.Errorf(result.Message())
+		t.Error(result.Message())
 	}
 }
 
